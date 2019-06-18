@@ -1,0 +1,73 @@
+<h5>Student Performance</h5>
+<div class="form-search">
+  <%= form_tag(student_performances_path, method: :get) do %>
+    <div class="form-row align-items-center">
+      <div class="col-auto">
+        <label class="sr-only" for="inlineFormInput">School Name</label>
+        <%= select_tag(:school_id, options_from_collection_for_select(School.all, 'id', 'school_name', params[:school_id]), include_blank: 'School Name', class: 'form-control') %>
+      </div>
+
+      <div class="col-auto">
+        <label class="sr-only" for="inlineFormInput">School Year</label>
+        <%= select_tag(:school_year, options_for_select(StudentPerformance::SCHOOL_YEAR, params[:school_year]),include_blank: 'School Year', class: 'form-control') %>
+      </div>
+
+      <div class="col-auto">
+        <label class="sr-only" for="inlineFormInput">Grade</label>
+        <%= select_tag(:grade, options_for_select(StudentPerformance::GRADE, params[:grade]), include_blank: 'Grade', class: 'form-control') %>
+      </div>
+      <%= submit_tag 'Search', class: 'btn btn-primary' %>
+    </div>
+  <% end %>
+</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">School Name</th>
+      <th scope="col">School Year</th>
+      <th scope="col">Student Name</th>
+      <th scope="col">Grade</th>
+
+      <% StudentPerformance::SEMESTER.each do |semester| %>
+        <th colspan="3" style="text-align: center">
+          <span>Semester <%= semester %></span>
+          <table>
+            <tr>
+              <% StudentPerformance::SUBJECT.each do |subject| %>
+                <td><%= subject %></td>
+              <% end %>
+            </tr>
+          </table>
+        </th>
+      <% end %>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <% @student_performances.each do |sp| %>
+      <tr>
+        <td><%= sp.student.student_id %></td>
+        <td><%= sp.student.school.school_name %></td>
+        <td><%= sp.school_year %></td>
+        <td><%= sp.student.name %></td>
+        <td><%= sp.grade %></td>
+        <% StudentPerformance::SEMESTER.each do |semester| %>
+          <% StudentPerformance::SUBJECT.each do |subject| %>
+            <td><%= StudentPerformance.by(sp.student_id, sp.school_year, semester, subject).try(:score) %></td>
+          <% end %>
+        <% end %>
+        <td>
+          Edit |
+          Delete
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div class="float-right">
+  <%#= paginate @students %>
+</div>

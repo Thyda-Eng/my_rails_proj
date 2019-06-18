@@ -1,0 +1,44 @@
+<h5>Edit Student</h5>
+<%= form_for @student, :url => {:controller => :students, action: :update} do |f| %>
+  <div class="form-group row">
+    <%= f.label 'Student ID *', class: "col-sm-2 col-form-label" %>
+    <div class="col-sm-7">
+      <%= f.text_field :student_id, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= f.label 'Name * ', class: "col-sm-2 col-form-label" %>
+    <div class="col-sm-7">
+      <%= f.text_field :name, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= f.label 'Gender', class: "col-sm-2 col-form-label" %>
+    <div class="col-sm-7">
+      <%= f.collection_select(:sex, { 'F' => 'Female', 'M' => 'Male' }, :first, :last, {}, class: 'form-control') %>
+    </div>
+  </div>
+  <br/>
+  <div class="form-group row">
+    <%= f.label 'Date of birth', class: "col-sm-2 col-form-label" %>
+    <div class="col-sm-7">
+      <%= f.date_field :date_of_birth, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= f.label 'School Name', class: "col-sm-2 col-form-label" %>
+    <div class="col-sm-7">
+      <%= f.select(:school_id, options_from_collection_for_select(School.all, 'id', 'school_name'),{}, class: 'form-control') %>
+    </div>
+  </div>
+
+  <div class="form-group row justify-content-end">
+    <div class="col-sm-8">
+      <%= f.submit 'Submit', class: 'btn btn-primary' %>
+    </div>
+
+  </div>
+<% end %>

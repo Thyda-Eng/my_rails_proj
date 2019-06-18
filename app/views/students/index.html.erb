@@ -1,0 +1,36 @@
+<h5>List of students</h5>
+<div class="float-right">
+  <%= link_to 'Student Registration', new_student_path, class: 'btn btn-primary' %>
+</div>
+<br/>
+<br/>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Sex</th>
+      <th scope="col">Date of Birth</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @students.each do |student| %>
+      <tr>
+        <th scope="row"><%= student.student_id %></th>
+        <td><%= student.name %></td>
+        <td><%= student.sex %></td>
+        <td><%= student.date_of_birth %></td>
+        <td>
+          <%= link_to 'Edit', edit_student_path(student) %> |
+          <%= link_to 'Delete', student_path(student), method: :delete %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div class="float-right">
+  <%= paginate @students %>
+</div>

@@ -1,0 +1,69 @@
+<h5>Student Study Performance</h5>
+<%= form_tag(student_performance_path, method: :get) do %>
+  <div class="form-group row">
+    <label class="col-sm-2 col-form-label">School Year</label>
+    <div class="col-sm-4">
+      <%= select_tag(:school_year, options_for_select(StudentPerformance::SCHOOL_YEAR, params[:school_year]), class: 'form-control', onchange: 'this.form.submit();') %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-sm-2 col-form-label">School Name</label>
+    <div class="col-sm-4">
+      <%= select_tag(:school_id, options_from_collection_for_select(School.all, 'id', 'school_name', params[:school_id]), include_blank: 'Select School', class: 'form-control', onchange: 'this.form.submit();') %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-sm-2 col-form-label">Student Name</label>
+    <div class="col-sm-4">
+      <%= select_tag(:student_id, options_from_collection_for_select(@students, 'id', 'name', params[:student_id]), include_blank: 'Select Student', class: 'form-control', onchange: 'this.form.submit();') %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-sm-2 col-form-label">Student Id</label>
+    <div class="col-sm-4">
+      <label><%= @student.try(:student_id) %></label>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-sm-2 col-form-label">Grade</label>
+    <div class="col-sm-4">
+      <label><%#= @student.grade %></label>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-sm-2 col-form-label">Sex</label>
+    <div class="col-sm-4">
+      <label><%= @student.try(:sex) %></label>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-sm-2 col-form-label">Date of Birth</label>
+    <div class="col-sm-4">
+      <label><%= @student.try(:date_of_birth) %></label>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-sm-3 col-form-label">Total score of both semester is</label>
+    <div class="col-sm-4">
+      <label><%= @total_score %></label>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-sm-2 col-form-label">Study Result</label>
+    <div class="col-sm-4">
+      <label class="text-primary"><%= @status %></label>
+    </div>
+  </div>
+  <% if @student %>
+    <%= column_chart @performances.group(:subject,:semester).sum(:score), min: 0, max: 10 %>
+  <% end %>
+
+<% end %>

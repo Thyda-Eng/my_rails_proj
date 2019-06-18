@@ -1,0 +1,10 @@
+<div class="container">
+  <h1>Student Study Performance</h1>
+  <div class="row">
+    <%= form_for(@student_performance, url: student_performances_path) do |f| %>
+       <%= f.fields_for :semester do |s| %>
+         <%= s.text_field :score %>
+       <% end %>
+    <% end %>
+  </div>
+</div>
